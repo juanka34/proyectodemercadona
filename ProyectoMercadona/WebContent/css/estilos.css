@@ -1,0 +1,39 @@
+@CHARSET "ISO-8859-1";
+
+#logo{
+	width:250px;
+}
+
+body {
+  padding : 10px ;
+  
+}
+
+#exTab1 .tab-content {
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+
+/* remove border radius for the tab */
+
+#exTab1 .nav-pills > li > a {
+  border-radius: 0;
+}
+
+#exTab1 .tab-content h3{
+	color:white;
+	padding-bottom:25px;
+}
+/* change border radius for the tab , apply corners on top*/
+
+.tab-content form p input{
+	width: 35%;
+	color: black;
+}
+.tab-content form{
+	padding-bottom: 20px;
+}
+
+
+
+
