@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sun.org.apache.bcel.internal.generic.Select;
 import com.sun.org.apache.xpath.internal.operations.And;
-
 import db.MysqlConnect;
 
 /**
@@ -22,70 +21,59 @@ import db.MysqlConnect;
 @WebServlet("/Pedidos")
 public class Pedidos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Pedidos() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public Pedidos() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
-		
-		   MysqlConnect c = MysqlConnect.getDbCon();
-			ResultSet rs = null;
-		   
-		  
-	            
-	             
-	              String id=(String) request.getSession().getAttribute("id");
-	            	 rs = c.query("Select * from pedido Where cliente_id="+ id +"and confirmado=0" );
-	             
-	              if(rs.next()){
-	            	 
-			    	  String fp= request.getParameter("fecha_pedido");
-		                String conf= request.getParameter("confirmado");
-		                String cid= request.getParameter("cliente_id");
-		             
-	              }
-	          
-	              else{
-						response.sendRedirect("index.jsp");
-					}
-			   
-	        try {
-	        	
-	            request.setAttribute("resultados", rs);
-	           
-	  		  
-	           	            
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }       
-		   
-	    	
-	          
-	        // TODO Auto-generated catch block
-            request.setAttribute("error", "Retrieving rows failed.");
+		MysqlConnect c = MysqlConnect.getDbCon();
+        ResultSet rs = null;
 
-	        
-	        
-	        request.getRequestDispatcher("jsp/listadopedidos.jsp").forward(request, response);
-	    }
+        String id = (String) request.getSession().getAttribute("id");
+        try {
+            rs = c.query("select * FROM pedido Where cliente_id=" + id + "  and confirmado=0");
 
-	
+            int pedido_id;
+            if (!rs.next()) {
+                pedido_id = c.insert("INSERT INTO pedido ( confirmado, cliente_id) VALUES " + "( '0', '" + id + "');");
+            }
+            else {
+                pedido_id = Integer.parseInt(rs.getString("id"));
+            }
 
+            
+            String producto_id = request.getParameter("id");
+
+            c.insert("INSERT INTO pedido_producto ( predido_id, producto_id)" + " VALUES (" + pedido_id + ", " + producto_id
+                    + ");");
+            String consulta="INSERT INTO pedido_producto ( predido_id, producto_id)" + " VALUES (" + pedido_id + ", " + producto_id+ ");";
+            request.setAttribute("consulta", consulta);
+            request.setAttribute("resultados", rs);
+            
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        request.getRequestDispatcher("Productos").forward(request,response);
+    }
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

@@ -19,7 +19,7 @@
 <script type="text/javascript" src="../js/miscript.js"></script>
 </head>
 <body>
-<h3><%= session.getAttribute("usuario") %> ha iniciado sesión</h3>
+<h3><%= session.getAttribute("usuario") %> ha iniciado sesión <%= session.getAttribute("id") %></h3>
 <h3>Listado de productos</h3>
 	<div class="container-fluid">
 		<div class="row">

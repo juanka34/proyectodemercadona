@@ -61,12 +61,13 @@ public class Login extends HttpServlet {
 			request.getRequestDispatcher("jsp/menu.jsp").forward(request, response);
 					
 		} else if (request.getParameter("login") != null) {
+			System.out.print("hey");
 			
 			String user= request.getParameter("user");
 			String pwd= request.getParameter("password");
 			
 			try {
-				rs = c.query("select usuario,password from cliente where usuario='"+user+"' and password='"+pwd+"';");
+				rs = c.query("select id,usuario,password from cliente where usuario='"+user+"' and password='"+pwd+"';");
 				if(rs.next()){
 					request.getSession().setAttribute("usuario",user);
                     request.getSession().setAttribute("id", rs.getString(1));
